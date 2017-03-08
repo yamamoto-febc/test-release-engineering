@@ -7,6 +7,7 @@ go:
 env:
   global:
   - PATH=/home/travis/gopath/bin:$PATH DEBIAN_FRONTEND=noninteractive
+  - secure: "Dh9lq4lnbYaSCHF7FsPs6P9q2eeXN/V/UUXm/54KYHnKabINs6kt5GdFskNcNYOfQdjsIi9Rbu4aG7zJtVeXyyctuVkWU+biscSstD5aeJskE/pm3lXLvntYu004t4d3BWZpqJ+F0hlUTCTN+j8Kzf5wElBR1w25/axWRHqQQk2J+VGzBdTP4yHjAbGWggXY2zG0TFugUCy99T3kbOM7qw+kocpB6WfA7OCFGM0uvO1kqe+5T3m2UhQYjv+0GZbSsBnwQffj8bqPdj4GgqD8+xFq7Si3zo+Yb4jneGSHMGLKEKDlHtDZ/BKryF1bZBJ2MJwHbSWmjeWuK5N0dk4edkEFuo3V1AHFed/Uyi14a+03zyHBApnJPik9HuctyoNdKYr6SnunVefw1z1BHqK80ZNcVIrRogF5NDj4ihUD/+cY+IaKX+pze3bRf2zuIRue9aUmS7/EQZK0jE2wwXg0Pkmi06vZxKj92IR6acPV1g5J5bze5asZUW3wHUnW78OxT0FzYTycDBOArrogSTGcnhwpyxfjndV3PqYUAyCVjN0WPlOH3HQSu76arr7El3N13ut5FkRveR7V6HEosaxfEtw6QU3HPgrMKqWexnstTe9TGKbJP9mRqbAo+jhLxgunswB6ugWnFXxx5ZgojTxvc0P07lJhMQiMR98IHUjTjWc="
 addons:
   apt:
     packages:
@@ -29,12 +30,7 @@ before_deploy:
 
 deploy:
 - provider: script
-  script: _tools/releng --task=upload-to-github-release -v && _tools/releng --task=upload-master-to-github-release -v
-  skip_cleanup: true
-  on:
-    branch: master
-- provider: script
-  script: _tools/releng --task=create-pullrequest --current-branch=$TRAVIS_BRANCH -v
+  script: scripts/myproject-release --task=create-pullrequest --current-branch=$TRAVIS_BRANCH
   skip_cleanup: true
   on:
     all_branches: true
