@@ -40,10 +40,6 @@ CLI client of the SakuraCloud
 %{_sysconfdir}/bash_completion.d/usacloud
 
 %changelog
-* Wed Mar 08 2017 <yamamoto.febc@gmail.com> - 0.0.3-1
-- Add binaries for test (by yamamoto-febc)
-- Rename .spec (by yamamoto-febc)
-
 
 * Fri Mar 3 2017 <yamamoto.febc@gmail.com> - 0.0.1-alpha.10
 - Initial commit
