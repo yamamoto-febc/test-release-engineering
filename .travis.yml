@@ -7,7 +7,7 @@ go:
 env:
   global:
   - PATH=/home/travis/gopath/bin:$PATH DEBIAN_FRONTEND=noninteractive
-  - secure: EeYE1tydkV2ageS/OVhmMXhdBJig+dGIEScRTjMGvwCNKwAm4wJadfQz/LIj8I0sYPq8AcdPfc1ZgLs2cpaS4FeqNg8ST9l/ukXtXN+Cj6jvaFuowGdbX1hM+5Jj+083m2AiuO2aAhGbjl6I69tqGkYQAjaJa3nSI8jJv/Ep3YCdX6by2cZL3PQdfuV4duS3jDCTah+lTonmA8lKtNE1VMd0FHqDvkGWpl9AClNwXsnIcdQSHggC6rxFbkgF7o1yYppE+5b5oVgV/j+vONWf/dMBMNn0WiVzlyVuLOCzLe3h6/K9O1r4Vpecn8KI+ldO0EHaf0XbriaQtOcysC8CsxvnFmGhwU+wOy7iruyWao1+qDV6qi5BNjrU06+R75exTMfXbArZ2t1V83CJU20N0DFYBsR2x+fN3KvqXQsK+l0lmDBBs287ZbofV0JtCGgHEUN+0MrL+JNijYmlBTjozbgVpdhpBdGoyp471MkiiE63GxpKvYS+Hq2Q3RcJ+PTwCjWVwHr3z10xs7odlOwuVPPEwLJwVscCoqN1HCnL6z362tua9i/8rUhbwUp7uFw69ZFSTMnZNWIloEDq0RP4ppW0n0Vt1M+4qRplnirFv57AOBNDcPcb0ZVXt17Pb2BDtqVYCCJ8ahCW0AxwKYjCXFee6mNGM9GbOYOpmjNROdw=
+  - secure: qsrgS5r+93Z3ZlnzENsqqVGAIG7cFGHYRC/F+9k9aMpl4Bvz4pvg83D0EjcE3Krpr16ZxLOooL+slvL87Qb1KD7amHR5w6uGAOrExXmsGoM+0U/U76F2AJ8xaHXCZueTPnglwD32VaJPj8YgSnecxCAU9D3vBk86m+8+gz1GEWimsj0zOxkGUkHoPjPmd9SIvSGtQFCpc/F+DzsEIDVUir2ln7hGMsrb327xoTVFCA/MWKcnA/Kb3WGdws0F9iwzvRYJZkKNEEo7shkasu5C+NZJJ25nxBNqCzqTo7XeqfcN37Vxe9jx+ZyXkUiQiyssiSvJi4jwneEU86+kcGzSfYZo7V9nfNHFtUsVE4NeKN18w/+fADawZZmfKmQdNU1GqaoBJfr6QL+nywwg0NXdhNrv61dykqRcHYL4na3cKCfppXn1vwzcay4wMOWHSWk3LNOOdealPAMrP6OcD9PQ8yv939B7lfN5Bn724Mg4S75k8xdho5T7efrY15wD5MSsGONCDzLFRRL9OJDUhKq2kOYdI8Au8fbzIUTqTd37EF77O1JGhDeUas9hCTvdIg3o0LTxgYW1gXBPMXdlOE5GV+KLbj2nMApyCTXU93zKuw5RQvJ50EGA33ZM8Lt6+z8nZIMPqUH+jygAYsG+BNzDWzXMF8VfLVrQwPy34APZkd0=
 addons:
   apt:
     packages:
@@ -29,7 +29,8 @@ before_deploy:
 - git fetch --tags --depth=1000 || true
 deploy:
 - provider: script
-  script: scripts/myproject-release --task=upload-to-github-release -v && scripts/myproject-release --task=upload-master-to-github-release -v
+  script: scripts/myproject-release --task=upload-to-github-release -v && scripts/myproject-release
+    --task=upload-master-to-github-release -v
   skip_cleanup: true
   on:
     branch: master
