@@ -29,7 +29,12 @@ before_deploy:
 - git fetch --tags --depth=1000 || true
 deploy:
 - provider: script
-  script: scripts/myproject-release --task=create-pullrequest --current-branch=$TRAVIS_BRANCH -v
+  script: scripts/myproject-release --task=upload-to-github-release -v && scripts/myproject-release --task=upload-master-to-github-release -v
+  skip_cleanup: true
+  on:
+    branch: master
+- provider: script
+  script: scripts/myproject-release --task=create-pullrequest --current-branch=$TRAVIS_BRANCH
   skip_cleanup: true
   on:
     all_branches: true
