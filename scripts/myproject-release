@@ -53,19 +53,13 @@ sub DEBUG() { $ENV{RELEASE_DEBUG} || $verbose }
 
 sub command {
     say('+ '. join ' ', @_) if DEBUG;
-    {
-        local *STDOUT; open STDOUT, '>', undef;
-        local *STDERR; open STDERR, '>', undef;
-        !system(@_) or croak $!;
-    }
+    my @args = (@_ , ("2>&1","> /dev/null"));
+    !system("@args") or croak $!;
 }
 sub command_with_exit_code {
     say('+ '. join ' ', @_) if DEBUG;
-    {
-        local *STDOUT; open STDOUT, '>', undef;
-        local *STDERR; open STDERR, '>', undef;
-        system(@_);
-    }
+    my @args = (@_ , ("2>&1","> /dev/null"));
+    system("@args");
 }
 sub _git {
     if($dry_run){
@@ -460,7 +454,7 @@ sub create_pull_request {
         git qw/config --global push.default matching/;
         git qw/config user.email/, 'yamamoto.febc@gmail.com';
         git qw/config user.name/, 'usacloud';
-        git qw/commit -am/, "update changelogs";
+        git qw/commit -am/, "'update changelogs'";
         git qw/push -u/, "https://$ENV{GITHUB_TOKEN}\@github.com/$REPO_NAME.git";
         infof "Difference is pushed to GitHub.\n";
     }
