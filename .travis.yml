@@ -7,18 +7,19 @@ go:
 env:
   global:
   - PATH=/home/travis/gopath/bin:$PATH DEBIAN_FRONTEND=noninteractive
+  - secure: bMet0cGaEn2Jo6yEb669ipC+CKTjvFUeqB/BZ8exW5Idwy4fr66EqbuFrRCcXmHBL3qpfLde+OGR8xzqaxPF6avK4oLLKl5PH21f7I59D6yhen37vHxZZCYxXwsOQL0YUUdH2zeXX4B48/EU3qCYrPpbsfLh47O6h/sruVmZp6Tc02n0wna2eQUnzCPLkCNaa2BXZD+SoSvVAVLZW39WNyDQgDpRSfjW1susFn/qjVeRHYq4NYFvYD/pt3SesBqXiVmFJmNjjSUDyJKe4zGLm7uAaXNzlksEB+XYLyhOuxT1gRcwygfgNHj5oGhZ5hZBT6b/HMU1zRhCvWvkTKk3HZk/KGkn1TXZrMxhHF4AhL4C4uPbfZ3avt4b16fhGaL0tkzFu/DLDyaOKd7wWK3lTDV6+JcdTV+NB8rLgd2p6hwDxdVfaaFYMQW9Ga8yQPpJ4MAlbtL8rrTBQ/2nd0afMYOZuomd2cdBpIMimTa+gj8bisxFAotPp8el9z4CIVw4PkULqX7IItX/DBXA/6cWl2SrLoitprRK+ysiGk9AkvYMjQF6VWW03gu62dAEAH4ezBPfHrnvyzZPnmqK21PTYz4ZQr7qswIqPbsRqN+NUA4Ysfc7tivfIlnyPbCEzIRqBWBPrFyAAibVPjFNQPfBmXbZ9oT00qlwUtGtJj/DCD0=
 addons:
   apt:
     packages:
-      - devscripts
-      - debhelper
+    - devscripts
+    - debhelper
 script:
 - make build
-
 before_deploy:
 - go get github.com/aktau/github-release
 - mkdir -p ~/bin
-- git clone https://github.com/github/hub.git && cd hub && script/build -o ~/bin/hub && cd ..
+- git clone https://github.com/github/hub.git && cd hub && script/build -o ~/bin/hub
+  && cd ..
 - echo $TRAVIS_BRANCH
 - git config --add remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
 - git fetch
@@ -26,15 +27,9 @@ before_deploy:
 - git checkout $TRAVIS_BRANCH
 - git fetch --depth=1000
 - git fetch --tags --depth=1000 || true
-
 deploy:
 - provider: script
-  script: _tools/releng --task=upload-to-github-release -v && _tools/releng --task=upload-master-to-github-release -v
-  skip_cleanup: true
-  on:
-    branch: master
-- provider: script
-  script: _tools/releng --task=create-pullrequest --current-branch=$TRAVIS_BRANCH -v
+  script: scripts/myproject-release --task=create-pullrequest --current-branch=$TRAVIS_BRANCH
   skip_cleanup: true
   on:
     all_branches: true
