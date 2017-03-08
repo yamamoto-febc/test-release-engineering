@@ -250,6 +250,7 @@ sub diff {
 }
 
 sub merged_prs {
+    say("REPONAME::$REPO_NAME") ;
     my $current_tag = shift;
     my @pull_nums = sort {$a <=> $b} map {
         if(m/Merge pull request #([0-9]+) /){ $1 } else { () }
