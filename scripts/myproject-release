@@ -414,6 +414,9 @@ sub upload_to_github_release {
 
 sub create_pull_request {
     my($current_branch) = @_;
+    if(!$current_branch){
+        $current_branch = current_branch()
+    }
 
     git qw/checkout/, $current_branch;
 
@@ -454,7 +457,7 @@ sub create_pull_request {
     say $pr_body;
 
     infof "Push changes\n";
-    git qw/pull origin/, $current_branch;
+    #git qw/pull/;
     $ret = hub_with_exit_code qw/pull-request -m/, $pr_body, qq/-b/, qq/$REPO_NAME:master/;
     if(!defined($ret) || $ret == 0){
         infof "Releasing pull request is created. Review and merge it. You can update changelogs and commit more in this branch before merging.\n";
