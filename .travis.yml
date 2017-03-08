@@ -1,0 +1,41 @@
+sudo: required
+services:
+- docker
+language: go
+go:
+- 1.8
+env:
+  global:
+  - PATH=/home/travis/gopath/bin:$PATH DEBIAN_FRONTEND=noninteractive
+addons:
+  apt:
+    packages:
+      - devscripts
+      - debhelper
+script:
+- make build
+
+before_deploy:
+- go get github.com/aktau/github-release
+- mkdir -p ~/bin
+- git clone https://github.com/github/hub.git && cd hub && script/build -o ~/bin/hub && cd ..
+- echo $TRAVIS_BRANCH
+- git config --add remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+- git fetch
+- git checkout master || git checkout -b master origin/master
+- git checkout $TRAVIS_BRANCH
+- git fetch --depth=1000
+- git fetch --tags --depth=1000 || true
+
+deploy:
+- provider: script
+  script: _tools/releng --task=upload-to-github-release -v && _tools/releng --task=upload-master-to-github-release -v
+  skip_cleanup: true
+  on:
+    branch: master
+- provider: script
+  script: _tools/releng --task=create-pullrequest --current-branch=$TRAVIS_BRANCH -v
+  skip_cleanup: true
+  on:
+    all_branches: true
+    condition: "$TRAVIS_BRANCH =~ ^bump-version-.*$"
