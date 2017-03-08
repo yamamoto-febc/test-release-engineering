@@ -40,6 +40,9 @@ CLI client of the SakuraCloud
 %{_sysconfdir}/bash_completion.d/usacloud
 
 %changelog
+* Wed Mar 08 2017 <yamamoto.febc@gmail.com> - 0.0.5-1
+- type1:merge (by yamamoto-febc)
+
 * Wed Mar 08 2017 <yamamoto.febc@gmail.com> - 0.0.4-1
 - Add test2 (by yamamoto-febc)
 
